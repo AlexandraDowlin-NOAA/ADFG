@@ -48,33 +48,13 @@ survnumber <- readRDS(file = here::here("output", region, paste0(region, "_", cr
 s_stations <- dplyr::filter(haul_by_area, ABUNDANCE_HAUL == "Y") |>
   nrow()
 
-a_haul <- dplyr::filter(haul_by_area, HAUL_TYPE == 3) |>
+a_hauls <- dplyr::filter(haul_by_area, HAUL_TYPE == 3) |>
   nrow()
 
-# s_stations <- haul0 |>
-#   dplyr::filter(abundance_haul == "Y") |>
-#   dplyr::distinct(stationid, stratum) |>
-#   nrow()
-# 
-# 
-# # total of attempted hauls 555sql, 550 r
-# a_hauls <- haul0 |>
-#   dplyr::filter(region == region_abbr) |>
-#   dplyr::filter(cruise == cruise_id) |>
-#   dplyr::filter(haul_type == "3") |>
-#   nrow()
-# # MCS note: if you modify the SQL code to be haul_type = 3 (as in the R code) you'll get the same answer as R. I had 550 tows attempted in my data report!
-# 
-# # total of unsuccessful hauls 29sql, 24 r
-# u_hauls <- haul0 |>
-#   dplyr::filter(region == region_abbr) |>
-#   dplyr::filter(cruise == cruise_id) |>
-#   dplyr::filter(abundance_haul == "N") |>
-#   dplyr::filter(haul_type == "3") |>
-#   nrow()
-# MCS note: this one is the same. If you filter the sql script to be haul_type = 3 you'll get the same number as in R. I'm not sure which is better, but 24 is the number I have in my report, so I'd say we should stick to that one.
+u_hauls <- dplyr::filter(haul_by_area, HAUL_TYPE == 3 & ABUNDANCE_HAUL == "N") |>
+   nrow()
 
-# stations within 3nm #123
+# stations within 3nm 
 stations_3nm <- haul_by_area |>
   dplyr::filter(
     ABUNDANCE_HAUL == "Y",
@@ -135,17 +115,6 @@ voucher_count <- sum(vouchers_by_area$N_RECORDS)
 # find out how to put together the new specimen table with the above voucher
 voucher_age_all <- dplyr::bind_rows(voucher_count, age_count) |>
   dplyr::select(COMMON_NAME, SPECIES_NAME, N_RECORDS_TOTAL, SAMPLE_TYPE)
-
-# voucher_taxa <- catch0 |>
-#   dplyr::left_join(haul0 %>% dplyr::select(hauljoin, abundance_haul)) |>
-#   dplyr::filter(region == SRVY &
-#                   cruise == cruise1 &
-#                   !is.na(voucher)) |>
-#   dplyr::group_by(species_code) |>
-#   dplyr::mutate(taxon = dplyr::case_when(
-#     species_code <= 31550 ~ "fish",
-#     species_code >= 40001 ~ "invert"
-#   ))
 
 voucher_fish_taxa_count <- sum(vouchers_by_area$N_RECORDS[vouchers_by_area$taxon == "fish"])
 
