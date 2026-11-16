@@ -28,7 +28,10 @@ if (!file.exists("data/oracle")) dir.create("data/oracle", recursive = TRUE)
 for (i in 1:length(locations)) {
   print(locations[i])
   filename <- tolower(gsub("\\.", "-", locations[i]))
-  a <- RODBC::sqlQuery(channel, paste0("SELECT * FROM ", locations[i]))
+  a <- RODBC::sqlQuery(channel, paste0("SELECT * FROM ", locations[i], 
+                                       # Only retrieve the data you need by specifying vessel and cruise
+                                       " WHERE VESSEL IN (", paste(vessel, collapse = ","), ")
+                                       AND CRUISE = ", cruise)) 
   readr::write_csv(
     x = a,
     here::here("data", "oracle", paste0(filename, ".csv"))

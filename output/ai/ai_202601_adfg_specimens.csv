@@ -1,0 +1,22 @@
+"COMMON_NAME","SPECIES_NAME","STATE_WATERS","SPECIES_CODE","SAMPLE_TYPE","N_RECORDS"
+"Atka mackerel","Pleurogrammus monopterygius","FEDERAL",21921,"Otoliths",851
+"Atka mackerel","Pleurogrammus monopterygius","STATE",21921,"Otoliths",158
+"Greenland turbot","Reinhardtius hippoglossoides","FEDERAL",10115,"Otoliths",29
+"Kamchatka flounder","Atheresthes evermanni","FEDERAL",10112,"Otoliths",405
+"Kamchatka flounder","Atheresthes evermanni","STATE",10112,"Otoliths",44
+"Pacific cod","Gadus macrocephalus","FEDERAL",21720,"Otoliths",483
+"Pacific cod","Gadus macrocephalus","STATE",21720,"Otoliths",107
+"Pacific halibut","Hippoglossus stenolepis","FEDERAL",10120,"Otoliths",481
+"Pacific halibut","Hippoglossus stenolepis","STATE",10120,"Otoliths",191
+"Pacific ocean perch","Sebastes alutus","FEDERAL",30060,"Otoliths",969
+"Pacific ocean perch","Sebastes alutus","STATE",30060,"Otoliths",40
+"arrowtooth flounder","Atheresthes stomias","FEDERAL",10110,"Otoliths",375
+"arrowtooth flounder","Atheresthes stomias","STATE",10110,"Otoliths",71
+"blackspotted rockfish","Sebastes melanostictus","FEDERAL",30052,"Otoliths",514
+"blackspotted rockfish","Sebastes melanostictus","STATE",30052,"Otoliths",8
+"northern rockfish","Sebastes polyspinis","FEDERAL",30420,"Otoliths",631
+"northern rockfish","Sebastes polyspinis","STATE",30420,"Otoliths",105
+"rougheye rockfish","Sebastes aleutianus","FEDERAL",30051,"Otoliths",45
+"rougheye rockfish","Sebastes aleutianus","STATE",30051,"Otoliths",12
+"walleye pollock","Gadus chalcogrammus","FEDERAL",21740,"Otoliths",457
+"walleye pollock","Gadus chalcogrammus","STATE",21740,"Otoliths",84

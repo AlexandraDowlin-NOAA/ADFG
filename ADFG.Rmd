@@ -10,13 +10,45 @@ output:
     reference_docx: template-adfg.docx
 fontsize:
 addr:
-  l1: 7600 Sand Pointe Way, NE
+  l1: 7600 Sand Point Way, NE
   l2: NMFS RACE Division, Groundfish Assessment Program
   l3: Seattle, WA 98115
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE, message = FALSE)
+
+# Load tables
+catch_state <- readr::read_csv(here::here(
+  "output", region,
+  paste0(region, "_", cruise, "_adfg_catch_state.csv")
+))
+catch_total <- readr::read_csv(here::here(
+  "output", region,
+  paste0(region, "_", cruise, "_adfg_catch_total.csv")
+))
+
+age_count_3nm <- readr::read_csv(here::here(
+  "output", region,
+  paste0(region, "_", cruise, "_adfg_specimens_state.csv")
+))
+age_count <- readr::read_csv(here::here(
+  "output", region,
+  paste0(region, "_", cruise, "_adfg_specimens_total.csv")
+))
+
+vouchers_state <- readr::read_csv(here::here(
+  "output", region,
+  paste0(region, "_", cruise, "_adfg_voucher_state.csv")
+))
+vouchers_total <- readr::read_csv(here::here(
+  "output", region,
+  paste0(region, "_", cruise, "_adfg_voucher_total.csv")
+))
+
+
+# Table of hauls within 3 nm ----------------------------------------------
+state_hauls <- read.csv(here::here("output", "region", paste0(region, "_", cruise, "_state_hauls.csv")))
 ```
 
 State of Alaska Fish Resource Permit CF-22-022  
@@ -28,16 +60,16 @@ Trawl Survey Contact: Ned.Laman@noaa.gov, Survey Team Lead
 
 
 # **Activity Title:**  
-RACE Groundfish Assessment Program Biennial Bottom Trawl Survey of `r region` Groundfish and Invertebrate Resources  
+RACE Groundfish Assessment Program Biennial Bottom Trawl Survey of `r region_name` Groundfish and Invertebrate Resources  
 
 # **Introduction:**  
-The Alaska Fisheries Science Center (AFSC) Resource Assessment and Conservation Engineering (RACE) Groundfish Assessment Program's (GAP) bottom trawl survey of the `r regionw_abbr` is conducted to monitor the distribution, abundance, and biological characteristics of multiple species of groundfishes and invertebrates in coastal and offshore Alaska waters. The survey provides catch per unit effort (CPUE) of key species; CPUE is used to estimate relative biomass from a stratified-random survey design. Survey data are also used to characterize length and age distributions, growth, recruitment, stock structure, and other important life history information of key species to better understand the ecological and physical factors affecting their distribution and abundance. These data, estimates, and study results are provided to federal and state stock assessment biologists and to the Groundfish Plan Teams of the North Pacific Fishery Management Council (NPFMC) who use the information to determine productivity and to inform annual Allowable Biological Catch (ABC) and Total Allowable Catch (TAC) for groundfishes in the `r region_abbr`.  
+The Alaska Fisheries Science Center (AFSC) Resource Assessment and Conservation Engineering (RACE) Groundfish Assessment Program's (GAP) bottom trawl survey of the `r regionw_abbr` is conducted to monitor the distribution, abundance, and biological characteristics of multiple species of groundfishes and invertebrates in coastal and offshore Alaska waters. The survey provides catch per unit effort (CPUE) of key species; CPUE is used to estimate relative biomass from a stratified-random survey design. Survey data are also used to characterize length and age distributions, growth, recruitment, stock structure, and other important life history information of key species to better understand the ecological and physical factors affecting their distribution and abundance. These data, estimates, and study results are provided to federal and state stock assessment biologists and to the Groundfish Plan Teams of the North Pacific Fishery Management Council (NPFMC) who use the information to determine productivity and to inform annual Allowable Biological Catch (ABC) and Total Allowable Catch (TAC) for groundfishes in the `r toupper(region)`.  
 
 # **Methods:**  
-The AFSC GAP biennial bottom trawl survey of the `r region_abbr` typically deploys two chartered commercial trawlers to conduct the survey. A 5x5-km grid is superimposed on bathymetry maps with a grid cell representing the primary sampling unit. Stations determined to be untrawlable in previous surveys of the area are not considered when allocating survey stations to vessels. A Poly Nor’Eastern research net with roller gear is trawled on bottom at each station for up to 15 minutes. Trawl height and width are monitored with acoustic net mensuration gear; bottom contact is derived from an accelerometer on the trawl footrope; surface and bottom temperatures are collected using a bathythermograph attached to the headrope of the trawl. Catches are processed by identifying all animals collected to the highest possible taxonomic classification and weighing and counting each taxon. Additional samples are collected by measuring the length of selected species, collecting age structures, tissue samples, and stomach contents from selected specimens, saving voucher specimens for later identification and accessioning to museum collections. All data are preserved digitally and are subjected to multiple quality control checks.  
+The AFSC GAP biennial bottom trawl survey of the `r toupper(region)` typically deploys two chartered commercial trawlers to conduct the survey. A 5x5-km grid is superimposed on bathymetry maps with a grid cell representing the primary sampling unit. Stations determined to be untrawlable in previous surveys of the area are not considered when allocating survey stations to vessels. A Poly Nor’Eastern research net with roller gear is trawled on bottom at each station for up to 15 minutes. Trawl height and width are monitored with acoustic net mensuration gear; bottom contact is derived from an accelerometer on the trawl footrope; surface and bottom temperatures are collected using a bathythermograph attached to the headrope of the trawl. Catches are processed by identifying all animals collected to the highest possible taxonomic classification and weighing and counting each taxon. Additional samples are collected by measuring the length of selected species, collecting age structures, tissue samples, and stomach contents from selected specimens, saving voucher specimens for later identification and accessioning to museum collections. All data are preserved digitally and are subjected to multiple quality control checks.  
 
 # **Results:**
-Active fishing for the `r maxyr` `r region_abbr` bottom trawl survey occurred between `r dates_conducted` and was the `r survnumber`, standardized multi-species survey in the `r time_series` begun in `r series_begun`. GAP considers this to be the period of time during which the trawl gear and trawling methods are standardized across the time series in this region. Two charter vessels, the *`r vessel1`* and the *`r vessel2`*, conducted the summer survey and, combined, successfully trawled `r s_stations` out of `r t_stations` planned stations; `r u_hauls` of the `r a_hauls` trawls attempted were unsuccessful. A total of `r stations_3nm` trawls were attempted within Alaska state waters and collected `r fish_3nm` fish taxa weighing `r scales::comma(fish_3nm_wt)` kg (Table 1). From combined state and offshore waters, the survey collected `r fish_all` fish taxa weighing `r scales::comma(fish_all_wt)` kg in total (Table 2). There were `r inverts_3nm` invertebrate taxa collected from Alaska state waters with a total weight of `r scales::comma(inverts_3nm_wt)` kg (Table 1). In total, `r inverts_all` invertebrate taxa were collected from combined state and offshore waters with a total weight of `r scales::comma(inverts_all_wt)` kg (Table 2). The same 4 fish species comprise approximately 80% of the total catch weight both from combined state and offshore waters and from within Alaska state waters in `r maxyr`. Those species are Pacific ocean perch, Atka mackerel, northern rockfish and walleye pollock. In total, from all state and offshore waters sampled, the survey vouchered `r voucher_all_count` fish and invertebrate taxa and collected `r scales::comma(oto_all)` otoliths pairs from `r oto_taxa` fish species (Table 4). Of the `r voucher_all_count` vouchered samples, `r voucher_fish_taxa_count` were fishes and the remaining `r voucher_invert_taxa_count` were invertebrates. Within Alaska state waters, `r voucher_3nm_count` specimens were vouchered, `r voucher_fish_taxa_count_3nm` were fishes and `r voucher_invert_taxa_count_3nm` were invertebrates, and `r scales::comma(oto_3nm)` otolith pairs were collected from `r oto_3nm_taxa` fish species (Table 3). Finalized and validated survey data were released on `r data_finalized`. Data products (biomass estimates, length composition, and age composition) were presented to the NPFMC's Joint Groundfish Plan Team during their annual September meeting. 
+Active fishing for the `r maxyr` `r toupper(region)` bottom trawl survey occurred between `r dates_conducted` and was the `r survnumber`, standardized multi-species survey in the `r time_series` begun in `r series_begun`. GAP considers this to be the period of time during which the trawl gear and trawling methods are standardized across the time series in this region. Two charter vessels, the *`r vessel1`* and the *`r vessel2`*, conducted the summer survey and, combined, successfully trawled `r s_stations` out of `r t_stations` planned stations; `r u_hauls` of the `r a_hauls` trawls attempted were unsuccessful. A total of `r stations_3nm` trawls were attempted within Alaska state waters and collected `r fish_3nm` fish taxa weighing `r scales::comma(fish_3nm_wt)` kg (Table 1). From combined state and offshore waters, the survey collected `r fish_all` fish taxa weighing `r scales::comma(fish_all_wt)` kg in total (Table 2). There were `r inverts_3nm` invertebrate taxa collected from Alaska state waters with a total weight of `r scales::comma(inverts_3nm_wt)` kg (Table 1). In total, `r inverts_all` invertebrate taxa were collected from combined state and offshore waters with a total weight of `r scales::comma(inverts_all_wt)` kg (Table 2). The same 4 fish species comprise approximately 80% of the total catch weight both from combined state and offshore waters and from within Alaska state waters in `r maxyr`. Those species are Pacific ocean perch, Atka mackerel, northern rockfish and walleye pollock. In total, from all state and offshore waters sampled, the survey vouchered `r voucher_all_count` fish and invertebrate taxa and collected `r scales::comma(oto_all)` otoliths pairs from `r oto_taxa` fish species (Table 4). Of the `r voucher_all_count` vouchered samples, `r voucher_fish_taxa_count` were fishes and the remaining `r voucher_invert_taxa_count` were invertebrates. Within Alaska state waters, `r voucher_3nm_count` specimens were vouchered, `r voucher_fish_taxa_count_3nm` were fishes and `r voucher_invert_taxa_count_3nm` were invertebrates, and `r scales::comma(oto_3nm)` otolith pairs were collected from `r oto_3nm_taxa` fish species (Table 3). Finalized and validated survey data were released on `r data_finalized`. Data products (biomass estimates, length composition, and age composition) were presented to the NPFMC's Joint Groundfish Plan Team during their annual September meeting. 
 
 Survey data products are available upon request through the GAP data request repository^[https://github.com/afsc-gap-products/data-requests] and have also been made available over the internet on the Alaska Fisheries Information Network (AKFIN^[https://akfin.psmfc.org/]) and the NMFS Fisheries One Stop Shop (FOSS^[https://www.fisheries.noaa.gov/foss/f?p=215:28]). 
 
@@ -45,7 +77,6 @@ Survey data products are available upon request through the GAP data request rep
 \newpage
 <!-- Catch Summary Table - Within 3-mile Territorial Waters -->
 ```{r, catch-summary-table}
-library(here)
 catch_sum_3nm <- catch_state |> 
   separate(SPECIES_NAME, c("species", "species_suffix"),
     sep = "(?= sp\\.)", extra = "merge", remove = FALSE
@@ -108,7 +139,6 @@ flextable::flextable(catch_sum_3nm, col_keys = c("COMMON_NAME", "dummy_col", "TO
 <!-- **r maxyr** Catch Summary Table -- Totals for Survey (including state waters) -->
 
 ```{r, catch-summary-table2}
-library(here)
 catch_sum_all <- catch_total %>% 
   separate(SPECIES_NAME, c("species", "species_suffix"),
     sep = "(?= sp\\.)", extra = "merge", remove = FALSE
