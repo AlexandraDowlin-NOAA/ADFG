@@ -44,8 +44,7 @@ if(refresh_tables){
   source('./02_adfg_report_tables_goa_ai.R') # Retrieve haul, catch, voucher, specimen data
 }
 
-source("./03_load_local_data.R")
-source('./04_data_analysis.R') # load and calculate values used in report
+source('./03_data_analysis.R') # load and calculate values used in report
 
 # Create the day's output folder
 dir_out <- paste0("./output/", Sys.Date())

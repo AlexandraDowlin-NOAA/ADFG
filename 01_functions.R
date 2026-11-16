@@ -1,6 +1,6 @@
 # Install if needed
 
-# GAP packages ------------------------------------------------------------
+# CRAN R packages --------------------------------------------------------
 packages <- c("knitr", "viridis", "flextable", "tidyverse", "RODBC", "getPass", "here", "remotes")
 
 ## Now load or install&load all
@@ -14,6 +14,7 @@ package.check <- lapply(
   }
 )
 
+# GAP packages ------------------------------------------------------------
 # Automatically update packages - These should just use the latest version
 remotes::install_github("afsc-gap-products/akgfmaps")
 remotes::install_github("afsc-gap-products/navmaps")
@@ -21,6 +22,6 @@ remotes::install_github("afsc-gap-products/navmaps")
 library(navmaps)
 library(akgfmaps)
 
-# Other R packages --------------------------------------------------------
+
 
 
