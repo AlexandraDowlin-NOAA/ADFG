@@ -96,8 +96,7 @@ haul <-
     HAUL_TYPE
   FROM RACEBASE.HAUL
   WHERE
-    ABUNDANCE_HAUL = 'Y'
-    AND VESSEL IN (", paste(vessel, collapse = ", "), ")",
+    VESSEL IN (", paste(vessel, collapse = ", "), ")",
         "AND CRUISE = ", cruise
       )
   ) |>

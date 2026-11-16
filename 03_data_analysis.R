@@ -44,6 +44,13 @@ survnumber <- readRDS(file = here::here("output", region, paste0(region, "_", cr
 
 #  Short values -----------------------------------------------------------
 # successful biomass tows 526sql
+
+s_stations <- dplyr::filter(haul_by_area, ABUNDANCE_HAUL == "Y") |>
+  nrow()
+
+a_haul <- dplyr::filter(haul_by_area, HAUL_TYPE == 3) |>
+  nrow()
+
 # s_stations <- haul0 |>
 #   dplyr::filter(abundance_haul == "Y") |>
 #   dplyr::distinct(stationid, stratum) |>
