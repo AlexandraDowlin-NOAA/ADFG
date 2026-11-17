@@ -77,7 +77,6 @@ write.csv(state_hauls,
           row.names = FALSE
 )
 
-
 # Get haul data ----
 haul <-
   RODBC::sqlQuery(
@@ -165,8 +164,21 @@ survey_taxa <-
         COMMON_NAME, 
         SPECIES_CODE
       FROM
-        GAP_PRODUCTS.AKFIN_TAXONOMIC_CLASSIFICATION"
+        GAP_PRODUCTS.TAXONOMIC_CLASSIFICATION 
+      WHERE 
+        ACTIVE = 1"
   )
+
+# revised_taxa <-
+#   RODBC::sqlQuery(
+#     channel = channel,
+#     query = "
+#       SELECT DISTINCT 
+#         OLD_SPECIES_CODE,
+#         NEW_SPECIES_CODE
+#       FROM
+#         GAP_TAXONOMY.TAXONOMIC_CHANGES"
+#   )
 
 # Get specimen types ----
 

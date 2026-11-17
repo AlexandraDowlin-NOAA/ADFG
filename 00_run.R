@@ -45,12 +45,13 @@ if(refresh_tables){
 }
 
 source('./03_data_analysis.R') # load and calculate values used in report
+source("./04_format_tables.R")
 
 # Create the day's output folder
-dir_out <- paste0("./output/", Sys.Date())
-dir.create(path = dir_out)
+dir_out <- here::here("output", Sys.Date())
+dir.create(path = dir_out, showWarnings = FALSE)
 rmarkdown::render(
-  paste0("./ADFG_REPORT.Rmd"),
+  here::here("ADFG.Rmd"),
   output_dir = dir_out,
   output_file = paste0(maxyr,"_ADFG_REPORT.docx")
 )

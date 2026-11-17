@@ -70,8 +70,8 @@ catch_by_taxon <-
     taxon, STATE_WATERS
   ) |>
   dplyr::summarise(
-    TOTAL_WEIGHT = sum(TOTAL_WEIGHT_KG),
-    TOTAL_COUNT = sum(TOTAL_COUNT),
+    TOTAL_WEIGHT = sum(TOTAL_WEIGHT_KG, na.rm = TRUE),
+    TOTAL_COUNT = sum(TOTAL_COUNT, na.rm = TRUE),
     N_TAXA = n()
   )
 
@@ -84,7 +84,7 @@ fish_3nm_wt <- catch_by_taxon$TOTAL_WEIGHT[catch_by_taxon$STATE_WATERS == "STATE
 fish_all <- length(unique(catch_by_area$SPECIES_CODE[catch_by_area$taxon == "fish"]))
 
 # total weight of fish taxa encountered in all survey
-fish_all_wt <- sum(catch_by_taxon$TOTAL_WEIGHT[catch_by_taxon$taxon == "fish"])
+fish_all_wt <- sum(catch_by_taxon$TOTAL_WEIGHT[catch_by_taxon$taxon == "fish"], na.rm = TRUE)
 
 # total count of invert taxa within 3nm
 inverts_3nm <- catch_by_taxon$TOTAL_COUNT[catch_by_taxon$STATE_WATERS == "STATE" & catch_by_taxon$taxon == "invert"]
@@ -96,93 +96,67 @@ inverts_3nm_wt <- catch_by_taxon$TOTAL_WEIGHT[catch_by_taxon$STATE_WATERS == "ST
 inverts_all <- length(unique(catch_by_area$SPECIES_CODE[catch_by_area$taxon == "invert"]))
 
 # total weight of invert taxa in all survey
-inverts_all_wt <- sum(catch_by_taxon$TOTAL_WEIGHT[catch_by_taxon$taxon == "invert"])
+inverts_all_wt <- sum(catch_by_taxon$TOTAL_WEIGHT[catch_by_taxon$taxon == "invert"], na.rm = TRUE)
 
 # VOUCHERS ----------------------------------------------------------------
 # Voucher summary 3nm ----------------------------------------------------------
 # MCS: need to confirm! does this look like a reasonable # of vouchers in state waters?
-voucher_count_3nm <- sum(vouchers_by_area$N_RECORDS[vouchers_by_area$STATE_WATERS == "STATE"])
+voucher_count_3nm <- sum(vouchers_by_area$N_RECORDS[vouchers_by_area$STATE_WATERS == "STATE"], na.rm = TRUE)
 
 
 # combine and stack vouchers and age samples
-voucher_age_3nm <- dplyr::bind_rows(voucher_count_3nm, age_count_3nm) |>
-  dplyr::select(COMMON_NAME, SPECIES_NAME, N_RECORDS_STATE, SAMPLE_TYPE)
+# voucher_age_3nm <- dplyr::bind_rows(voucher_count_3nm, age_count_3nm) |>
+#   dplyr::select(COMMON_NAME, SPECIES_NAME, N_RECORDS_STATE, SAMPLE_TYPE)
 
 # voucher summary all survey  --------------------------------------------------
 # counts of vouchers for all survey
-voucher_count <- sum(vouchers_by_area$N_RECORDS)
+voucher_count <- sum(vouchers_by_area$N_RECORDS, na.rm = TRUE)
 
 # find out how to put together the new specimen table with the above voucher
-voucher_age_all <- dplyr::bind_rows(voucher_count, age_count) |>
-  dplyr::select(COMMON_NAME, SPECIES_NAME, N_RECORDS_TOTAL, SAMPLE_TYPE)
+# voucher_age_all <- dplyr::bind_rows(voucher_count, age_count) |>
+#   dplyr::select(COMMON_NAME, SPECIES_NAME, N_RECORDS_TOTAL, SAMPLE_TYPE)
 
-voucher_fish_taxa_count <- sum(vouchers_by_area$N_RECORDS[vouchers_by_area$taxon == "fish"])
+voucher_fish_taxa_count <- sum(vouchers_by_area$N_RECORDS[vouchers_by_area$taxon == "fish"], na.rm = TRUE)
 
-voucher_invert_taxa_count <- sum(vouchers_by_area$N_RECORDS[vouchers_by_area$taxon == "invert"])
+voucher_invert_taxa_count <- sum(vouchers_by_area$N_RECORDS[vouchers_by_area$taxon == "invert"], na.rm = TRUE)
 
-voucher_fish_taxa_count_3nm <- sum(vouchers_by_area$N_RECORDS[vouchers_by_area$taxon == "fish" & vouchers_by_area$STATE_WATERS == "STATE"])
+voucher_fish_taxa_count_3nm <- sum(vouchers_by_area$N_RECORDS[vouchers_by_area$taxon == "fish" & vouchers_by_area$STATE_WATERS == "STATE"], na.rm = TRUE)
 
-voucher_invert_taxa_count_3nm <- sum(vouchers_by_area$N_RECORDS[vouchers_by_area$taxon == "invert" & vouchers_by_area$STATE_WATERS == "STATE"])
+voucher_invert_taxa_count_3nm <- sum(vouchers_by_area$N_RECORDS[vouchers_by_area$taxon == "invert" & vouchers_by_area$STATE_WATERS == "STATE"], na.rm = TRUE)
 
 
 # count of vouchers collected within 3nm
-voucher_3nm_count <- sum(vouchers_by_area$N_RECORDS[vouchers_by_area$STATE_WATERS == "STATE"])
+voucher_3nm_count <- sum(vouchers_by_area$N_RECORDS[vouchers_by_area$STATE_WATERS == "STATE"], na.rm = TRUE)
 
 # count of vouchers collected in all survey #there's a zero
-voucher_all_count <- sum(vouchers_by_area$N_RECORDS)
+voucher_all_count <- sum(vouchers_by_area$N_RECORDS, na.rm = TRUE)
 
 # Taxa of fish and inverts
-voucher_fish_taxa <- vouchers_total |>
-  dplyr::left_join(species0, by = c("SPECIES_CODE" = "species_code")) |>
-  dplyr::mutate(taxon = dplyr::case_when(
-    SPECIES_CODE <= 31550 ~ "fish",
-    SPECIES_CODE >= 40001 ~ "invert"
-  )) |>
-  dplyr::filter(taxon == "fish")
+voucher_fish_taxa <- length(unique(vouchers_by_area$SPECIES_CODE[vouchers_by_area$taxon == "fish"]))
 
-voucher_invert_taxa <- vouchers_total |>
-  dplyr::left_join(species0, by = c("SPECIES_CODE" = "species_code")) |>
-  dplyr::mutate(taxon = dplyr::case_when(
-    SPECIES_CODE <= 31550 ~ "fish",
-    SPECIES_CODE >= 40001 ~ "invert"
-  )) |>
-  dplyr::filter(taxon == "invert")
+voucher_invert_taxa <- length(unique(vouchers_by_area$SPECIES_CODE[vouchers_by_area$taxon == "invert"]))
 
 
 # AGE SAMPLES -------------------------------------------------------------
 # total count of taxa otolith were collected from in all survey
-oto_taxa <- voucher_age_all |>
-  dplyr::filter(SAMPLE_TYPE == "Otoliths") |>
-  nrow()
+oto_taxa <- length(unique(age_by_area$SPECIES_CODE))
 
 # total count of all survey otoliths collected
-oto_all <- voucher_age_all |>
-  dplyr::filter(SAMPLE_TYPE == "Otoliths") |>
-  dplyr::summarize(total = sum(N_RECORDS_TOTAL)) |>
-  as.numeric()
+oto_all <- sum(unique(age_by_area$N_RECORDS), na.rm = TRUE)
 
 # total count of otoliths collected from within 3nm
-oto_3nm <- voucher_age_3nm |>
-  dplyr::filter(SAMPLE_TYPE == "Otoliths") |>
-  dplyr::mutate(N_RECORDS_STATE = as.numeric(N_RECORDS_STATE)) |>
-  dplyr::summarize(total = sum(N_RECORDS_STATE)) |>
-  as.numeric()
+oto_3nm <- sum(unique(age_by_area$N_RECORDS[age_by_area$STATE_WATERS == "STATE"]), na.rm = TRUE)
 
 # total count of taxa otoliths were collected from within 3nm
-oto_3nm_taxa <- voucher_age_3nm |>
-  dplyr::filter(SAMPLE_TYPE == "Otoliths") |>
-  nrow()
+oto_3nm_taxa <- length(unique(age_by_area$SPECIES_CODE[age_by_area$STATE_WATERS == "STATE"]))
 
 
 # Total catch
-total_wt_all_catch <- catch_total |>
-  dplyr::summarize(total = sum(TOTAL_WEIGHT_KG)) |>
-  as.numeric()
+total_wt_all_catch <- sum(catch_by_area$TOTAL_WEIGHT_KG, na.rm = TRUE)
+
 total_wt_all_80 <- total_wt_all_catch * 0.8
 
 
 # Total 3nm catch
-total_wt_3nm_catch <- catch_state |>
-  dplyr::summarize(total = sum(TOTAL_WEIGHT_KG_STATE)) |>
-  as.numeric()
+total_wt_3nm_catch <- sum(catch_by_area$TOTAL_WEIGHT_KG[catch_by_area$STATE_WATERS == "STATE"], na.rm = TRUE)
 total_wt_3nm_80 <- total_wt_3nm_catch * 0.8
